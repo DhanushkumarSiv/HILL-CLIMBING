@@ -38,6 +38,61 @@ Feedback is provided in terms of heuristic function
 <h3>Step-4:</h3>
 <p> Lopp Step -2 and Step-3  until we achieve the score to be Zero to achieve Global Minima.</p>
 
+<h2>Program :</h2>
+
+```python
+import random
+import string
+
+# Target string
+TARGET = "Artificial Intelligence"
+
+# Fitness function (heuristic):
+# Lower score = closer to target
+def fitness(candidate):
+    return sum(abs(ord(candidate[i]) - ord(TARGET[i])) for i in range(len(TARGET)))
+
+# Generate a random string of same length as target
+def random_string(length):
+    letters = string.printable  # printable characters
+    return ''.join(random.choice(letters) for _ in range(length))
+
+# Mutate one character of the string
+def mutate(parent):
+    index = random.randrange(len(parent))  # pick a random index
+    letters = string.printable
+    new_char = random.choice(letters)
+    # Replace char at the chosen index
+    child = parent[:index] + new_char + parent[index+1:]
+    return child
+
+# Simple Hill Climbing Algorithm
+def hill_climb():
+    current = random_string(len(TARGET))     # Step 1: Random initial string
+    current_score = fitness(current)
+
+    print(f"Initial Score: {current_score} Solution: {current}")
+
+    # Loop until fitness is zero
+    while current_score != 0:
+        neighbor = mutate(current)           # Step 2: Mutate
+        neighbor_score = fitness(neighbor)   # Step 3: Evaluate
+
+        # If neighbor is better, accept it
+        if neighbor_score < current_score:
+            current, current_score = neighbor, neighbor_score
+            print(f"Score: {current_score} Solution: {current}")
+
+    return current
+
+# Run the algorithm
+solution = hill_climb()
+print("\nFinal Solution:", solution)
+
+
+```
+
+
 <hr>
 <h2>Sample Input and Output</h2>
 <h2>Sample String:</h2> Artificial Intelligence
